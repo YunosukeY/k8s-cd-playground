@@ -25,6 +25,12 @@ create () {
 
 deploy () {
   helmfile apply -f "${repo_dir}/k8s/charts/argo-cd/helmfile.yaml"
+  kubectl create secret generic -n argocd private-repo-creds \
+    --from-literal=type=git \
+    --from-literal=url=https://github.com/YunosukeY \
+    --from-literal=username=YunosukeY \
+    --from-file=password="${repo_dir}/github-pat"
+  kubectl label secret -n argocd private-repo-creds argocd.argoproj.io/secret-type=repo-creds
 }
 
 if [ "$command" == "create" ]; then
