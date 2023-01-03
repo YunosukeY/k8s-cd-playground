@@ -39,7 +39,7 @@ deploy () {
     --for condition=available --timeout=300s
   kubectl wait -n argocd po/argo-cd-argocd-application-controller-0 --for condition=ready --timeout=300s
 
-  kubectl apply -f "${repo_dir}/k8s/cd/ingress-nginx.yaml"
+  kubectl apply -f "${repo_dir}/k8s/cd/app-of-apps.yaml"
 }
 
 open_dashboard () {
