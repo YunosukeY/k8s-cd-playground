@@ -54,6 +54,16 @@ open_dashboard () {
   open http://localhost:8080
 }
 
+run () {
+  sleep 30 # wait sync
+  kubectl wait -n ingress deploy/ingress-nginx-controller --for condition=available --timeout=300s
+  kubectl wait -n kube-system deploy/external-secrets-cert-controller deploy/external-secrets-webhook --for condition=available --timeout=300s
+  kubectl wait -n app deploy/app-deployment --for condition=available --timeout=300s
+  sleep 3 # hack
+
+  curl localhost/api/v1/public/todos
+}
+
 if [ "$command" == "create" ]; then
   create
   deploy
@@ -61,6 +71,7 @@ if [ "$command" == "create" ]; then
 elif [ "$command" == "run" ]; then
   create
   deploy
+  run
 elif [ "$command" == "delete" ]; then
   kind delete cluster
 else
