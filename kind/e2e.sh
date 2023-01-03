@@ -42,9 +42,19 @@ deploy () {
   kubectl apply -f "${repo_dir}/k8s/cd/ingress-nginx.yaml"
 }
 
+open_dashboard () {
+  kubectl apply -f "${repo_dir}/k8s/app/node-port.yaml"
+
+  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d | pbcopy
+  echo passowrd copied
+
+  open http://localhost:8080
+}
+
 if [ "$command" == "create" ]; then
   create
   deploy
+  open_dashboard
 elif [ "$command" == "run" ]; then
   create
   deploy
