@@ -23,10 +23,16 @@ create () {
   kind create cluster --config "${repo_dir}/kind/cluster.yaml"
 }
 
+deploy () {
+  helmfile apply -f "${repo_dir}/k8s/charts/argo-cd/helmfile.yaml"
+}
+
 if [ "$command" == "create" ]; then
   create
+  deploy
 elif [ "$command" == "run" ]; then
   create
+  deploy
 elif [ "$command" == "delete" ]; then
   kind delete cluster
 else
