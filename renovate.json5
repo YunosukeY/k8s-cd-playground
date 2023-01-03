@@ -1,6 +1,21 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ]
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:base", "github>aquaproj/aqua-renovate-config#1.5.0"],
+
+  branchConcurrentLimit: 0,
+  prHourlyLimit: 0,
+  automerge: true,
+  platformAutomerge: true,
+
+  kubernetes: {
+    fileMatch: [
+      "^k8s/app/.+\\.yaml$",
+      "^k8s/cd/.+\\.yaml$",
+      "^kind/.+\\.yaml$",
+    ],
+  },
+
+  labels: ["dependencies"],
+
+  reviewers: ["YunosukeY"],
 }
