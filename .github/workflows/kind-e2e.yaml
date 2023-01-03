@@ -1,0 +1,28 @@
+name: kind e2e
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  kind:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aquaproj/aqua-installer@v2.0.2
+        with:
+          aqua_version: v1.29.0
+      - run: helm plugin install https://github.com/databus23/helm-diff
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          echo -n $GITHUB_TOKEN > ./github-pat
+          cat <<EOF > access-key.env
+          access-key=$AWS_ACCESS_KEY
+          secret-access-key=$AWS_SECRET_ACCESS_KEY
+          EOF
+          ./kind/e2e.sh run
