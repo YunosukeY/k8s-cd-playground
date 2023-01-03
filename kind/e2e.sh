@@ -31,6 +31,15 @@ deploy () {
     --from-literal=username=YunosukeY \
     --from-file=password="${repo_dir}/github-pat"
   kubectl label secret -n argocd private-repo-creds argocd.argoproj.io/secret-type=repo-creds
+  kubectl wait -n argocd \
+    deploy/argo-cd-argocd-applicationset-controller \
+    deploy/argo-cd-argocd-redis \
+    deploy/argo-cd-argocd-repo-server \
+    deploy/argo-cd-argocd-server \
+    --for condition=available --timeout=300s
+  kubectl wait -n argocd po/argo-cd-argocd-application-controller-0 --for condition=ready --timeout=300s
+
+  kubectl apply -f "${repo_dir}/k8s/cd/ingress-nginx.yaml"
 }
 
 if [ "$command" == "create" ]; then
