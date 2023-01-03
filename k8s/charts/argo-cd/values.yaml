@@ -11,7 +11,9 @@ configs:
         generate:
           command: ["/bin/sh", "-c"]
           args: ["helmfile -q template --include-crds --skip-tests"]
-
+      - name: kustomize
+        generate:
+          command: ["kustomize", "build"]
 dex:
   enabled: false
 notifications:
