@@ -1,3 +1,17 @@
+repoServer:
+  image:
+    repository: chatwork/argocd-helmfile
+    tag: 2.5.5-0.149.0
+  containerSecurityContext:
+    runAsNonRoot: false
+configs:
+  cm:
+    configManagementPlugins: |
+      - name: helmfile
+        generate:
+          command: ["/bin/sh", "-c"]
+          args: ["helmfile -q template --include-crds --skip-tests"]
+
 dex:
   enabled: false
 notifications:
