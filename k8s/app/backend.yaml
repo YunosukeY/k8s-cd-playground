@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: app
+  name: app
+  labels:
+    app: app
+spec:
+  ports:
+    - name: peculiar
+      port: 80
+      targetPort: 8080
+    - name: common
+      port: 8888
+  selector:
+    app: app
+    tier: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: app
+  name: app-deployment
+  labels:
+    app: app
+spec:
+  selector:
+    matchLabels:
+      app: app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: app
+        tier: backend
+    spec:
+      containers:
+        - image: backend@sha256:unknown
+          name: app
+          ports:
+            - containerPort: 8080
+              name: app
+          command: ["main", "app", "-d"]
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8888
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8888
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8888
+            initialDelaySeconds: 3
+            periodSeconds: 3
+      imagePullSecrets:
+        - name: registry-key

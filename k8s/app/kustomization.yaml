@@ -1,0 +1,9 @@
+---
+images:
+  - name: backend
+    newName: kimitsu/kind-backend
+    digest: sha256:9cc21d969783bf94d1304696d245d4417635c60dbce09bdbb2574f26d020076f
+resources:
+  - ingress.yaml
+  - backend.yaml
+  - external-secret.yaml

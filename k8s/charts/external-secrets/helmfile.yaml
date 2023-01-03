@@ -1,0 +1,8 @@
+repositories:
+  - name: external-secrets-operator
+    url: https://charts.external-secrets.io
+releases:
+  - name: external-secrets
+    namespace: kube-system
+    chart: external-secrets-operator/external-secrets
+    version: 0.7.0
