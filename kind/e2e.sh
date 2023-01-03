@@ -24,6 +24,7 @@ create () {
 }
 
 deploy () {
+  # deploy argo-cd and repo-crds, and wait
   helmfile apply -f "${repo_dir}/k8s/charts/argo-cd/helmfile.yaml"
   kubectl create secret generic -n argocd private-repo-creds \
     --from-literal=type=git \
@@ -39,9 +40,11 @@ deploy () {
     --for condition=available --timeout=300s
   kubectl wait -n argocd po/argo-cd-argocd-application-controller-0 --for condition=ready --timeout=300s
 
+  # deploy secret for eso
   kubectl create namespace app
   kubectl create secret generic -n app awssm-secret --from-env-file="${repo_dir}/access-key.env"
 
+  # deploy app-of-apps
   kubectl apply -f "${repo_dir}/k8s/cd/app-of-apps.yaml"
 }
 
