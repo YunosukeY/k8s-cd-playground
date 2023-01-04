@@ -24,6 +24,8 @@ configs:
         end
       end
       return hs
+  params:
+    server.insecure: true
 
 controller:
   env:
