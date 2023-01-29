@@ -2,7 +2,7 @@
 images:
   - name: backend
     newName: kimitsu/kind-backend
-    newTag: master@sha256:41b358a0ab740cb2c490f7d6f245338f7e572ec2a462310728864534ef26c5fc
+    newTag: master@sha256:30afb85df0d8f4a92e016c1c54681ecd9ac7d063cc501a13343bfcb570740c32
 resources:
   - ingress.yaml
   - backend.yaml
