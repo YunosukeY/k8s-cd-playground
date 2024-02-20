@@ -45,7 +45,8 @@ deploy () {
   kubectl create secret generic -n app awssm-secret --from-env-file="${repo_dir}/access-key.env"
 
   # deploy app-set
-  kubectl apply -f "${repo_dir}/k8s/cd/app-set.yaml"
+  export BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  envsubst < k8s/cd/app-set.yaml | kubectl apply -f -
 }
 
 open_dashboard () {

@@ -33,7 +33,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/YunosukeY/k8s-cd-playground.git
-        targetRevision: HEAD
+        targetRevision: ${BRANCH}
         path: '{{path}}'
         plugin:
           name: '{{plugin}}'
