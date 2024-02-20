@@ -1,0 +1,46 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  namespace: argocd
+  name: app-set
+spec:
+  generators:
+    - list:
+        elements:
+          - name: ingress-nginx
+            syncwave: "0"
+            path: k8s/charts/ingress-nginx
+            plugin: helmfile
+            namespace: ingress
+          - name: external-secrets
+            syncwave: "0"
+            path: k8s/charts/external-secrets
+            plugin: helmfile
+            namespace: kube-system
+          - name: app
+            syncwave: "1"
+            path: k8s/app
+            plugin: kustomize
+            namespace: app
+  template:
+    metadata:
+      namespace: argocd
+      name: '{{name}}'
+      annotations:
+        argocd.argoproj.io/sync-wave: '{{syncwave}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/YunosukeY/k8s-cd-playground.git
+        targetRevision: ${BRANCH}
+        path: '{{path}}'
+        plugin:
+          name: '{{plugin}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
