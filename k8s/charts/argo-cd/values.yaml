@@ -11,6 +11,9 @@ configs:
         generate:
           command: ["/bin/sh", "-c"]
           args: ["helmfile -q template --include-crds --skip-tests"]
+      - name: kustomize
+        generate:
+          command: ["kustomize", "build"]
     resource.customizations.health.argoproj.io_Application: |
       hs = {}
       hs.status = "Progressing"
