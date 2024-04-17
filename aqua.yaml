@@ -11,5 +11,5 @@ registries:
 packages:
 - name: helm/helm@v3.14.4
 - name: helmfile/helmfile@v0.163.1
-- name: kubernetes/kubectl@v1.29.4
+- name: kubernetes/kubectl@v1.30.0
 - name: kubernetes-sigs/kind@v0.22.0
