@@ -10,6 +10,6 @@ registries:
   ref: v4.169.0 # renovate: depName=aquaproj/aqua-registry
 packages:
 - name: helm/helm@v3.14.4
-- name: helmfile/helmfile@v0.163.1
+- name: helmfile/helmfile@v0.164.0
 - name: kubernetes/kubectl@v1.30.0
 - name: kubernetes-sigs/kind@v0.22.0
